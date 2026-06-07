@@ -248,7 +248,7 @@ The qualitative outputs confirm: safety rules (no binding advice, no premiums) a
 | --- | --- | --- | --- | --- | --- |
 | 1 | Establish baseline | Handcrafted colour/shape features + classical classifier on raw pixel statistics | ExtraTreesClassifier (sklearn) | ~38% accuracy (limited class set) | Baseline — fast but brand-blind; fails on visually similar brands |
 | 2 | Improve accuracy with deep features | Full transfer learning on ResNet-18, replace classification head, full fine-tuning, no augmentation | `microsoft/resnet-18` via HF Trainer | ~60% accuracy (initial run, no augmentation) | Large jump; deep features capture brand-specific design elements |
-| 3 | Add augmentation and regularisation | Added RandomResizedCrop, RandomHorizontalFlip, RandomRotation, ColorJitter; label smoothing 0.1; warmup ratio 0.1 | `microsoft/resnet-18` via HF Trainer | **25.5% accuracy (203/796)** | Current production model; severely impacted by training class imbalance (Toyota: 775 images dominates predictions); retraining with balanced data required |
+| 3 | Add augmentation and regularisation | Added RandomResizedCrop, RandomHorizontalFlip, RandomRotation, ColorJitter; label smoothing 0.1; warmup ratio 0.1 | `microsoft/resnet-18` via HF Trainer | **25.5% accuracy (203/796)** | Iteration 3 was selected for deployment because it reflects the final reproducible training setup. However, evaluation showed that augmentation and the imbalanced training set led to dominant-class predictions. This was identified as a limitation rather than an improvement. |
 
 #### 2C.5 Evaluation and Error Analysis
 - Metrics and/or visual checks: Overall accuracy on 796 test images; per-class precision, recall, F1-score (from `sklearn.classification_report`); macro and weighted averages saved in `models/car-image-classifier/vision_metadata.json`.
@@ -264,7 +264,7 @@ The qualitative outputs confirm: safety rules (no binding advice, no premiums) a
 
 ## 3. Deployment
 
-- Deployment URL: https://github.com/ochsncon/car-purchase-advisor
+- Deployment URL: https://huggingface.co/spaces/ochsncon/CarPurchaseAdvisor
 - Main user flow: Upload car image -> review vehicle class -> review price range -> read short AI purchase assessment.
 - Screenshots:
 
@@ -321,8 +321,8 @@ The debug section is hidden by default and contains the raw pipeline outputs. It
 
 Evidence for selected bonus items:
 
-- **Third block with strong quality:** All three AI blocks (ML Numeric Data, NLP, Computer Vision) are fully implemented with training scripts, model artifacts, fallback paths, and integration tests via the Gradio UI.
-
+- **Third block with strong quality:** The third block (NLP) is implemented as a structured explanation layer with two prompt variants and a deterministic fallback. It is integrated with the CV and ML outputs and improves interpretability of the prediction results.
+  
 - **More than two data sources:** The app draws from three distinct data sources: (1) structured used-car listings (`CarsDatasets2025.csv`, 1,175 cleaned rows) for price prediction, (2) labeled vehicle image dataset (`data/raw/Cars Dataset/`, 2,519 training + 796 test images across 19 brand folders) for brand classification, and (3) user-provided runtime inputs (mileage, age, budget, max monthly rate) for personalised purchase assessment.
 
 - **A core section done exceptionally well:** The NLP recommendation engine (`src/recommendation_engine.py`) implements three prompt variants (rule-based fallback, `structured`, `concise` — switchable via `LLM_PROMPT_VERSION` env var), a multi-tier budget assessment (within / close / above budget), and a financing orientation calculator with three tiers (Realistic ≤12 months, Tight ≤24 months, Unrealistic >24 months) that derives a financing gap and rough repayment timeline. The layer degrades gracefully to a deterministic rule-based explanation when the API key is absent, ensuring the app is always usable.
