@@ -1,0 +1,81 @@
+{
+  "architectures": [
+    "ResNetForImageClassification"
+  ],
+  "depths": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "downsample_in_bottleneck": false,
+  "downsample_in_first_stage": false,
+  "dtype": "float32",
+  "embedding_size": 64,
+  "hidden_act": "relu",
+  "hidden_sizes": [
+    64,
+    128,
+    256,
+    512
+  ],
+  "id2label": {
+    "0": "Acura",
+    "1": "Alpha Romeo",
+    "2": "Aston Martin",
+    "3": "Audi",
+    "4": "BMW",
+    "5": "Bentley",
+    "6": "Cadillac",
+    "7": "Fiat",
+    "8": "Ford",
+    "9": "Hyundai",
+    "10": "Jaguar",
+    "11": "Kia",
+    "12": "Mahindra",
+    "13": "Mazda",
+    "14": "Mercedes-Benz",
+    "15": "Porsche",
+    "16": "Rolls Royce",
+    "17": "Swift",
+    "18": "Toyota"
+  },
+  "label2id": {
+    "Acura": 0,
+    "Alpha Romeo": 1,
+    "Aston Martin": 2,
+    "Audi": 3,
+    "BMW": 4,
+    "Bentley": 5,
+    "Cadillac": 6,
+    "Fiat": 7,
+    "Ford": 8,
+    "Hyundai": 9,
+    "Jaguar": 10,
+    "Kia": 11,
+    "Mahindra": 12,
+    "Mazda": 13,
+    "Mercedes-Benz": 14,
+    "Porsche": 15,
+    "Rolls Royce": 16,
+    "Swift": 17,
+    "Toyota": 18
+  },
+  "layer_type": "basic",
+  "model_type": "resnet",
+  "num_channels": 3,
+  "out_features": [
+    "stage4"
+  ],
+  "out_indices": [
+    4
+  ],
+  "stage_names": [
+    "stem",
+    "stage1",
+    "stage2",
+    "stage3",
+    "stage4"
+  ],
+  "transformers_version": "4.57.6"
+}

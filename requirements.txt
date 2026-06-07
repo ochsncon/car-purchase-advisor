@@ -1,0 +1,17 @@
+gradio
+pandas
+numpy
+scikit-learn
+joblib
+pillow
+matplotlib
+seaborn
+python-dotenv
+datasets
+evaluate
+transformers
+accelerate
+torch
+torchvision
+torchaudio
+openai
